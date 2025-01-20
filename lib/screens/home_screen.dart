@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_scan/models/scan_model.dart';
 import 'package:qr_scan/providers/db_provider.dart';
+import 'package:qr_scan/providers/scan_list_provider.dart';
 import 'package:qr_scan/providers/ui_provider.dart';
 import 'package:qr_scan/screens/screens.dart';
 import 'package:qr_scan/widgets/widgets.dart';
@@ -38,19 +39,19 @@ class _HomeScreenBody extends StatelessWidget {
     // Canviar per a anar canviant entre pantalles
     final currentIndex = uiProvider.SelectedMenuOpt;
 
-    //Creacion temporal de la base de datos
-    DbProvider.db.database;
-    ScanModel nouScan = ScanModel(valor: "https://paucasesnovescifp.cat/");
-    DbProvider.db.insertScan(nouScan);
+    final scanListProvider = Provider.of<ScanListProvider>(context);
 
     switch (currentIndex) {
       case 0:
+        scanListProvider.carregaScansPerTipus('geo');
         return MapasScreen();
 
       case 1:
+        scanListProvider.carregaScansPerTipus('http');
         return DireccionsScreen();
 
       default:
+        scanListProvider.carregaScansPerTipus('geo');
         return MapasScreen();
     }
   }

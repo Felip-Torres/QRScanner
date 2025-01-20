@@ -6,21 +6,21 @@ class CustomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final uiProvider = Provider.of<UiProvider>(context);
-    final currentIndex = uiProvider.SelectedMenuOpt;
-
     return BottomNavigationBar(
-      onTap: (int i) => uiProvider.SelectedMenuOpt = i,
-        elevation: 0,
-        currentIndex: currentIndex,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Mapa',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.compass_calibration),
-            label: 'Direccions',
-          )
-        ]);
+      currentIndex: uiProvider.SelectedMenuOpt,
+      onTap: (index) {
+        uiProvider.SelectedMenuOpt = index;
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.map),
+          label: 'Mapas',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.directions),
+          label: 'Direccions',
+        ),
+      ],
+    );
   }
 }
