@@ -14,14 +14,27 @@ class ScanTiles extends StatelessWidget {
 
     return ListView.builder(
       itemCount: scans.length,
-      itemBuilder: (_,index) => ListTile(
-        leading: Icon(
-          tipus == 'http' ? Icons.home_outlined : Icons.map_outlined,
+      itemBuilder: (_,index) => Dismissible(
+        key: UniqueKey(),
+        background: Container(
+          color: Colors.red,
+          child: Align(
+            child: Icon(Icons.delete_forever),
+            alignment: Alignment.centerRight,
+          ),
         ),
-        title: Text(scans[index].valor),
-        subtitle: Text(scans[index].id.toString()),
-        trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-        onTap: () {},
+        onDismissed: (DismissDirection direction) {
+          scanListProvider.esborraPerId(scans[index].id!);
+        },
+        child: ListTile(
+          leading: Icon(
+            tipus == 'http' ? Icons.home_outlined : Icons.map_outlined,
+          ),
+          title: Text(scans[index].valor),
+          subtitle: Text(scans[index].id.toString()),
+          trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.grey),
+          onTap: () {},
+        ),
       ),
     );
   }
