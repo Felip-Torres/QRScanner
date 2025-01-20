@@ -15,10 +15,12 @@ class ScanTiles extends StatelessWidget {
     return ListView.builder(
       itemCount: scans.length,
       itemBuilder: (_,index) => ListTile(
-        leading: Icon(Icons.home_outlined),
+        leading: Icon(
+          this.tipus == 'http' ? Icons.home_outlined : Icons.map_outlined,
+        ),
         title: Text(scans[index].valor),
         subtitle: Text(scans[index].id.toString()),
-        trailing: Icon(Icons.keyboard_arrow_right),
+        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
         onTap: () {},
       ),
     );
