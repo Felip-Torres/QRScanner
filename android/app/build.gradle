@@ -37,6 +37,8 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    namespace 'com.example.ejercicio4' // Agrega esta línea
 }
 
 flutter {
