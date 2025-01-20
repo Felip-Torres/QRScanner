@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:qr_scan/providers/ui_provider.dart';
 
 class CustomNavigationBar extends StatelessWidget {
+  const CustomNavigationBar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final uiProvider = Provider.of<UiProvider>(context);
@@ -11,7 +13,7 @@ class CustomNavigationBar extends StatelessWidget {
       onTap: (index) {
         uiProvider.SelectedMenuOpt = index;
       },
-      items: [
+      items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.map),
           label: 'Mapas',
