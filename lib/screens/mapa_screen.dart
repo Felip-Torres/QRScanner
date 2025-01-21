@@ -13,6 +13,7 @@ class MapaScreen extends StatefulWidget {
 
 class _MapaScreenState extends State<MapaScreen> {
   final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  MapType _currentMapType = MapType.normal;
 
   
   @override
@@ -30,15 +31,63 @@ class _MapaScreenState extends State<MapaScreen> {
     )); 
 
     return Scaffold(
-      body: GoogleMap(
-        myLocationEnabled: true,
-        myLocationButtonEnabled: false,
-        mapType: MapType.hybrid,
-        markers: markers,
-        initialCameraPosition: _puntoInicial,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+      appBar: AppBar(
+        title: Text('Mapa'),
+        backgroundColor: Colors.red,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.my_location),
+            onPressed: () {
+              _controller.future.then((GoogleMapController controller) {
+                controller.animateCamera(CameraUpdate.newCameraPosition(_puntoInicial));
+              });
+            },
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          GoogleMap(
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            mapType: _currentMapType,
+            markers: markers,
+            initialCameraPosition: _puntoInicial,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+          ),
+          Positioned(
+            bottom: 30,
+            left: 10,
+            child: Container(
+              color: Colors.white, // Set the background color here
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: DropdownButton<MapType>(
+                value: _currentMapType,
+                icon: Icon(Icons.arrow_downward),
+                onChanged: (MapType? newValue) {
+                  setState(() {
+                    _currentMapType = newValue!;
+                  });
+                },
+                items: <MapType>[MapType.normal, MapType.satellite, MapType.terrain, MapType.hybrid]
+                    .map<DropdownMenuItem<MapType>>((MapType value) {
+                  return DropdownMenuItem<MapType>(
+                    value: value,
+                    child: Text(value.toString().split('.').last),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

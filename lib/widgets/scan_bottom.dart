@@ -1,11 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_scan/models/scan_model.dart';
-import 'package:qr_scan/providers/db_provider.dart';
 import 'package:qr_scan/providers/scan_list_provider.dart';
+import 'package:qr_scan/screens/qr_scanner_screen.dart';
 import 'package:qr_scan/utils/utils.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ScanButton extends StatelessWidget {
   const ScanButton({Key? key}) : super(key: key);
@@ -18,24 +19,17 @@ class ScanButton extends StatelessWidget {
         Icons.filter_center_focus,
       ),
       onPressed: () async {
-        // Solicitar permiso de cámara
-        var status = await Permission.camera.status;
-        if (!status.isGranted) {
-          status = await Permission.camera.request();
-        }
+        final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => QRScannerScreen()),
+        );
 
-        if (status.isGranted) {
-          print('Botó polsat!');
-          String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-            "#3D88EF", "Cancelar", false, ScanMode.QR);
-          print(barcodeScanRes);
-          final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
-          ScanModel scan = ScanModel(valor: barcodeScanRes);
-          scanListProvider.nouScan(barcodeScanRes);
-          launchURL(context, scan);
-        } else {
-          // Manejar el caso en que el permiso no fue concedido
-          print('Permiso de cámara no concedido');
+        if (result != null) {
+          ScanModel scan = ScanModel(valor: result);
+          scanListProvider.nouScan(result);
+          if (scan.tipus == 'http')launchURL(context, scan);
+          else Navigator.pushNamed(context, 'mapa', arguments: scan);
         }
       },
     );
