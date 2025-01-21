@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:qr_scan/providers/scan_list_provider.dart';
 import 'package:qr_scan/utils/utils.dart';
 
+
+//Widget para mostrar los scans
 class ScanTiles extends StatelessWidget {
   final String tipus;
 

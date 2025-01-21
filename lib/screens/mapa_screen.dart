@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:qr_scan/models/scan_model.dart';
 
+//Screen para mostrar el mapa
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);
 
@@ -24,6 +25,7 @@ class _MapaScreenState extends State<MapaScreen> {
       zoom: 17,
     );
 
+    //Marcadores del mapa
     Set<Marker> markers = new Set<Marker>();
     markers.add(new Marker(
       markerId: MarkerId('id1'),
@@ -31,6 +33,7 @@ class _MapaScreenState extends State<MapaScreen> {
     )); 
 
     return Scaffold(
+      
       appBar: AppBar(
         title: Text('Mapa'),
         backgroundColor: Colors.red,
@@ -41,6 +44,7 @@ class _MapaScreenState extends State<MapaScreen> {
           },
         ),
         actions: [
+          // Botón para centrar el mapa en la posición actual
           IconButton(
             icon: Icon(Icons.my_location),
             onPressed: () {
@@ -53,6 +57,7 @@ class _MapaScreenState extends State<MapaScreen> {
       ),
       body: Stack(
         children: [
+          // Mapa
           GoogleMap(
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
@@ -63,6 +68,7 @@ class _MapaScreenState extends State<MapaScreen> {
               _controller.complete(controller);
             },
           ),
+          // Dropdown para cambiar el tipo de mapa
           Positioned(
             bottom: 30,
             left: 10,

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+
+//Screen para escanear QR
 class QRScannerScreen extends StatefulWidget {
   @override
   _QRScannerScreenState createState() => _QRScannerScreenState();
@@ -17,6 +19,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     _requestCameraPermission();
   }
 
+  // Pedir permisos per utilitzar la càmera
   Future<void> _requestCameraPermission() async {
     final status = await Permission.camera.request();
     setState(() {
@@ -36,6 +39,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
           },
         ),
       ),
+      // Si tenemos permisos, mostramos el escáner
       body: _hasPermission
           ? MobileScanner(
               onDetect: (barcodeCapture) {
@@ -46,6 +50,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                 }
               },
             )
+          //Si no tenemos permisos, mostramos un mensaje
           : Center(
               child: Text('Camera permission is required to scan QR codes'),
             ),
